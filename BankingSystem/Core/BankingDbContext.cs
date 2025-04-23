@@ -22,9 +22,10 @@ public partial class BankingDbContext : DbContext
     public virtual DbSet<Transaction> Transactions { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseMySql("server=localhost;port=3306;user=root;password=123456;database=bankingdb", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.25-mysql"));
-
+    {
+        //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        //=> optionsBuilder.UseMySql("server=localhost;port=3306;user=root;password=123456;database=bankingdb", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.25-mysql"));
+    }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
@@ -46,24 +47,23 @@ public partial class BankingDbContext : DbContext
             entity.Property(e => e.BlockedAmount)
                 .HasPrecision(18, 2)
                 .HasColumnName("blockedAmount");
+
+            entity.HasOne(d => d.BankAccount).WithOne(p => p.Balance)
+                .HasForeignKey<Balance>(d => d.BankAccountId)
+                .HasConstraintName("balance_ibfk_1");
         });
 
         modelBuilder.Entity<Bankaccount>(entity =>
         {
-            entity.HasKey(e => new { e.Id, e.UpdatedAt })
-                .HasName("PRIMARY")
-                .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
 
             entity.ToTable("bankaccount");
+
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
 
             entity.HasIndex(e => e.Number, "Number").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.UpdatedAt)
-                .ValueGeneratedOnAddOrUpdate()
-                .HasDefaultValueSql("CURRENT_TIMESTAMP")
-                .HasColumnType("datetime")
-                .HasColumnName("updatedAt");
             entity.Property(e => e.Branch)
                 .HasMaxLength(5)
                 .HasColumnName("branch");
@@ -92,6 +92,11 @@ public partial class BankingDbContext : DbContext
             entity.Property(e => e.Type)
                 .HasColumnType("enum('PAYMENT','CURRENT')")
                 .HasColumnName("type");
+            entity.Property(e => e.UpdatedAt)
+                .ValueGeneratedOnAddOrUpdate()
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime")
+                .HasColumnName("updatedAt");
         });
 
         modelBuilder.Entity<Transaction>(entity =>
@@ -143,6 +148,10 @@ public partial class BankingDbContext : DbContext
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime")
                 .HasColumnName("updatedAt");
+
+            entity.HasOne(d => d.BankAccount).WithMany(p => p.Transactions)
+                .HasForeignKey(d => d.BankAccountId)
+                .HasConstraintName("transaction_ibfk_1");
         });
 
         OnModelCreatingPartial(modelBuilder);

@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankingSystemAPI", "BankingSystemAPI\BankingSystemAPI.csproj", "{BF2F075B-E256-4D9A-9C70-AE5F3F3CEA81}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BankingSystemAPI", "BankingSystemAPI\BankingSystemAPI.csproj", "{BF2F075B-E256-4D9A-9C70-AE5F3F3CEA81}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{AB35889D-4512-4FB8-B433-48607BAB0D1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{AB35889D-4512-4FB8-B433-48607BAB0D1C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service", "Service\Service.csproj", "{5C3B4B0D-5B9C-44F4-A065-71D99A8137D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceTests", "ServiceTests\ServiceTests.csproj", "{BE4DFBA7-8C97-4394-A566-A88DD82B560E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{AB35889D-4512-4FB8-B433-48607BAB0D1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB35889D-4512-4FB8-B433-48607BAB0D1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB35889D-4512-4FB8-B433-48607BAB0D1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C3B4B0D-5B9C-44F4-A065-71D99A8137D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C3B4B0D-5B9C-44F4-A065-71D99A8137D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C3B4B0D-5B9C-44F4-A065-71D99A8137D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C3B4B0D-5B9C-44F4-A065-71D99A8137D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE4DFBA7-8C97-4394-A566-A88DD82B560E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE4DFBA7-8C97-4394-A566-A88DD82B560E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE4DFBA7-8C97-4394-A566-A88DD82B560E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE4DFBA7-8C97-4394-A566-A88DD82B560E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
