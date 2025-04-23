@@ -20,7 +20,7 @@ namespace ServiceTests
         public void Initialize()
         {
             var options = new DbContextOptionsBuilder<BankingDbContext>()
-            .UseInMemoryDatabase(Guid.NewGuid().ToString()) // cria um banco novo a cada teste
+            .UseInMemoryDatabase(Guid.NewGuid().ToString())
             .Options;
 
             _context = new BankingDbContext(options);
@@ -52,7 +52,6 @@ namespace ServiceTests
                 HolderEmail = "maria@email.com",
                 HolderDocument = "22222222222",
                 HolderType = "NATURAL"
-                // Status, Number e UpdatedAt serão preenchidos pelo serviço
             };
 
             var created = await _service.CreateAccount(account);
