@@ -38,6 +38,15 @@ public partial class BankingDbContext : DbContext
 
             entity.ToTable("balance");
 
+            modelBuilder.Entity<Balance>()
+                .HasKey(b => b.BankAccountId);
+
+            modelBuilder.Entity<Balance>()
+                .HasOne(b => b.BankAccount)
+                .WithOne(a => a.Balance)
+                .HasForeignKey<Balance>(b => b.BankAccountId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             entity.Property(e => e.BankAccountId)
                 .ValueGeneratedNever()
                 .HasColumnName("bankAccountId");
