@@ -10,4 +10,6 @@ public partial class Balance
     public decimal AvailableAmount { get; set; }
 
     public decimal BlockedAmount { get; set; }
+
+    public virtual Bankaccount BankAccount { get; set; } = null!;
 }
