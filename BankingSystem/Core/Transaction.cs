@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Core;
 
@@ -33,5 +34,6 @@ public partial class Transaction
 
     public DateTime? UpdatedAt { get; set; }
 
+    [JsonIgnore]
     public virtual Bankaccount BankAccount { get; set; } = null!;
 }
