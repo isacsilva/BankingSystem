@@ -1,5 +1,6 @@
 ﻿using BankingSystemAPI.DTOs;
 using Core.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,6 +17,7 @@ namespace BankingSystemAPI.Controllers
             _service = service;
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -23,6 +25,7 @@ namespace BankingSystemAPI.Controllers
             return transaction == null ? NotFound() : Ok(transaction);
         }
 
+        [Authorize]
         [HttpGet("by-account/{accountId}")]
         public async Task<IActionResult> GetByAccountId(int accountId, [FromQuery] DateTime? from, [FromQuery] DateTime? to, [FromQuery] string type)
         {
@@ -30,6 +33,7 @@ namespace BankingSystemAPI.Controllers
             return Ok(transactions);
         }
 
+        [Authorize]
         [HttpGet("by-counterparty-document/{document}")]
         public async Task<IActionResult> GetByCounterpartyDocument(string document)
         {
@@ -37,6 +41,7 @@ namespace BankingSystemAPI.Controllers
             return Ok(transactions);
         }
 
+        [Authorize]
         [HttpPost("credit")]
         public async Task<IActionResult> Credit([FromBody] TransactionAmountDto dto)
         {
@@ -44,6 +49,7 @@ namespace BankingSystemAPI.Controllers
             return result == null ? BadRequest("Crédito inválido.") : Ok(result);
         }
 
+        [Authorize]
         [HttpPost("debit")]
         public async Task<IActionResult> Debit([FromBody] TransactionAmountDto dto)
         {

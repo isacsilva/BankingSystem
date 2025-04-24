@@ -1,6 +1,7 @@
 ﻿using BankingSystemAPI.DTOs;
 using Core;
 using Core.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankingSystemAPI.Controllers
@@ -16,6 +17,7 @@ namespace BankingSystemAPI.Controllers
             _service = service;
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] Bankaccount account)
         {
@@ -23,6 +25,7 @@ namespace BankingSystemAPI.Controllers
             return CreatedAtAction(nameof(GetByNumber), new { number = created.Number }, created);
         }
 
+        [Authorize]
         [HttpGet("by-number/{number}")]
         public async Task<IActionResult> GetByNumber(string number)
         {
@@ -30,6 +33,7 @@ namespace BankingSystemAPI.Controllers
             return account == null ? NotFound() : Ok(account);
         }
 
+        [Authorize]
         [HttpGet("by-branch/{branch}")]
         public async Task<IActionResult> GetByBranch(string branch)
         {
@@ -37,6 +41,7 @@ namespace BankingSystemAPI.Controllers
             return Ok(accounts);
         }
 
+        [Authorize]
         [HttpGet("by-document/{document}")]
         public async Task<IActionResult> GetByHolderDocument(string document)
         {
@@ -44,6 +49,7 @@ namespace BankingSystemAPI.Controllers
             return Ok(accounts);
         }
 
+        [Authorize]
         [HttpPut("update-email/{id}")]
         public async Task<IActionResult> UpdateEmail(int id, [FromQuery] string email)
         {
@@ -51,6 +57,7 @@ namespace BankingSystemAPI.Controllers
             return success ? NoContent() : NotFound();
         }
 
+        [Authorize]
         [HttpPut("update-status/{id}")]
         public async Task<IActionResult> UpdateStatus(int id, [FromQuery] string status)
         {
@@ -58,6 +65,7 @@ namespace BankingSystemAPI.Controllers
             return success ? NoContent() : NotFound();
         }
 
+        [Authorize]
         [HttpPut("close/{id}")]
         public async Task<IActionResult> CloseAccount(int id)
         {
@@ -65,6 +73,7 @@ namespace BankingSystemAPI.Controllers
             return success ? NoContent() : NotFound();
         }
 
+        [Authorize]
         [HttpGet("balance/{id}")]
         public async Task<IActionResult> GetBalance(int id)
         {
@@ -72,6 +81,7 @@ namespace BankingSystemAPI.Controllers
             return balance == null ? NotFound() : Ok(balance);
         }
 
+        [Authorize]
         [HttpPost("transfer")]
         public async Task<IActionResult> Transfer([FromBody] TransferRequestDto dto)
         {
@@ -79,6 +89,7 @@ namespace BankingSystemAPI.Controllers
             return success ? Ok() : BadRequest("Transferência inválida.");
         }
 
+        [Authorize]
         [HttpPost("hold")]
         public async Task<IActionResult> HoldAmount([FromQuery] int id, [FromQuery] decimal amount)
         {
@@ -86,6 +97,7 @@ namespace BankingSystemAPI.Controllers
             return success ? Ok() : BadRequest("Saldo insuficiente.");
         }
 
+        [Authorize]
         [HttpPost("release")]
         public async Task<IActionResult> ReleaseAmount([FromQuery] int id, [FromQuery] decimal amount)
         {
