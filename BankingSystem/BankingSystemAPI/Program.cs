@@ -60,7 +60,7 @@ namespace BankingSystemAPI
             builder.Services.AddDbContext<BankingDbContext>(options =>
                 options.UseMySql(
                     connectionString,
-                    ServerVersion.AutoDetect(connectionString) // Auto detecta a versão do MySQL
+                    ServerVersion.AutoDetect(connectionString)
                 )
             );
 
@@ -74,7 +74,7 @@ namespace BankingSystemAPI
             })
             .AddJwtBearer(options =>
             {
-                options.RequireHttpsMetadata = false; // true em produção
+                options.RequireHttpsMetadata = false;
                 options.SaveToken = true;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
