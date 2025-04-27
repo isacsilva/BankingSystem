@@ -19,6 +19,16 @@ namespace BankingSystemAPI
             // Add services to the container.
 
             builder.Services.AddControllers();
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", builder =>
+                {
+                    builder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
+            });
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(c =>
@@ -41,7 +51,7 @@ namespace BankingSystemAPI
                         Array.Empty<string>()
                     }
                 });
-            });                      
+            });
 
             var connectionString = builder.Configuration.GetConnectionString("BankingConnection")
                 ?? throw new InvalidOperationException("Connection string 'BankingConnection' not found.");
@@ -91,12 +101,15 @@ namespace BankingSystemAPI
                 app.UseSwaggerUI();
             }
 
+            app.UseDeveloperExceptionPage();
+
             app.UseHttpsRedirection();
 
             app.UseAuthentication();
 
-            app.UseAuthorization();
+            app.UseCors("AllowAll");
 
+            app.UseAuthorization();
 
             app.MapControllers();
 

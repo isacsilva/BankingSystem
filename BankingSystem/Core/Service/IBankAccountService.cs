@@ -19,5 +19,6 @@ namespace Core.Service
         Task<bool> HoldAmount(int accountId, decimal amount);
         Task<bool> ReleaseAmount(int accountId, decimal amount);
         Task<bool> Transfer(int fromAccountId, string toAccountNumber, decimal amount);
+        Task<IEnumerable<Bankaccount>> FilterAccounts(string? number, string? branch, string? document);
     }
 }

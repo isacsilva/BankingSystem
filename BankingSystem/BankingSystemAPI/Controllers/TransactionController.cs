@@ -26,11 +26,16 @@ namespace BankingSystemAPI.Controllers
         }
 
         [Authorize]
-        [HttpGet("by-account/{accountId}")]
-        public async Task<IActionResult> GetByAccountId(int accountId, [FromQuery] DateTime? from, [FromQuery] DateTime? to, [FromQuery] string type)
+        [HttpGet("filter")]
+        public async Task<IActionResult> FilterTransactions(    [FromQuery] int? Id,
+                                                                [FromQuery] int? accountId,
+                                                                [FromQuery] DateTime? from,
+                                                                [FromQuery] DateTime? to,
+                                                                [FromQuery] string? type,
+                                                                [FromQuery] string? counterpartyDocument)
         {
-            var transactions = await _service.GetByAccountId(accountId, from, to, type);
-            return Ok(transactions);
+            var result = await _service.FilterTransactions(Id, accountId, from, to, type, counterpartyDocument);
+            return Ok(result);
         }
 
         [Authorize]
