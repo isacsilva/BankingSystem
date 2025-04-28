@@ -169,17 +169,17 @@ namespace Service
             if (fromAccount.Balance.AvailableAmount < amount)
                 return false;
 
-            // Transferência de valores
+            
             fromAccount.Balance.AvailableAmount -= amount;
             toAccount.Balance.AvailableAmount += amount;
 
-            // Transação de débito (origem)
+            
             _context.Transactions.Add(new Transaction
             {
                 Type = "DEBIT",
                 Amount = amount,
                 BankAccountId = fromAccount.Id,
-                CounterpartyBankCode = "0001",
+                CounterpartyBankCode = "270",
                 CounterpartyBankName = "MVP Bank",
                 CounterpartyBranch = toAccount.Branch,
                 CounterpartyAccountNumber = toAccount.Number,
@@ -191,13 +191,13 @@ namespace Service
                 UpdatedAt = DateTime.UtcNow
             });
 
-            // Transação de crédito (destino)
+          
             _context.Transactions.Add(new Transaction
             {
                 Type = "CREDIT",
                 Amount = amount,
                 BankAccountId = toAccount.Id,
-                CounterpartyBankCode = "0001",
+                CounterpartyBankCode = "270",
                 CounterpartyBankName = "MVP Bank",
                 CounterpartyBranch = fromAccount.Branch,
                 CounterpartyAccountNumber = fromAccount.Number,
@@ -211,6 +211,25 @@ namespace Service
 
             await _context.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<IEnumerable<Bankaccount>> FilterAccounts(string? number, string? branch, string? document)
+        {
+            var query = _context.Bankaccounts
+                .Include(b => b.Balance)
+                .Include(b => b.Transactions)
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(number))
+                query = query.Where(b => b.Number == number);
+
+            if (!string.IsNullOrEmpty(branch))
+                query = query.Where(b => b.Branch == branch);
+
+            if (!string.IsNullOrEmpty(document))
+                query = query.Where(b => b.HolderDocument == document);
+
+            return await query.ToListAsync();
         }
 
         private async Task<string> GenerateUniqueAccountNumber()

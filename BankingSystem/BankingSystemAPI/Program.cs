@@ -19,6 +19,16 @@ namespace BankingSystemAPI
             // Add services to the container.
 
             builder.Services.AddControllers();
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", builder =>
+                {
+                    builder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
+            });
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(c =>
@@ -41,7 +51,7 @@ namespace BankingSystemAPI
                         Array.Empty<string>()
                     }
                 });
-            });                      
+            });
 
             var connectionString = builder.Configuration.GetConnectionString("BankingConnection")
                 ?? throw new InvalidOperationException("Connection string 'BankingConnection' not found.");
@@ -50,7 +60,7 @@ namespace BankingSystemAPI
             builder.Services.AddDbContext<BankingDbContext>(options =>
                 options.UseMySql(
                     connectionString,
-                    ServerVersion.AutoDetect(connectionString) // Auto detecta a versão do MySQL
+                    ServerVersion.AutoDetect(connectionString)
                 )
             );
 
@@ -64,7 +74,7 @@ namespace BankingSystemAPI
             })
             .AddJwtBearer(options =>
             {
-                options.RequireHttpsMetadata = false; // true em produção
+                options.RequireHttpsMetadata = false;
                 options.SaveToken = true;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -91,12 +101,15 @@ namespace BankingSystemAPI
                 app.UseSwaggerUI();
             }
 
+            app.UseDeveloperExceptionPage();
+
             app.UseHttpsRedirection();
 
             app.UseAuthentication();
 
-            app.UseAuthorization();
+            app.UseCors("AllowAll");
 
+            app.UseAuthorization();
 
             app.MapControllers();
 

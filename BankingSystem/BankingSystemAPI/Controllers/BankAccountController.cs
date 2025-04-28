@@ -104,5 +104,13 @@ namespace BankingSystemAPI.Controllers
             var success = await _service.ReleaseAmount(id, amount);
             return success ? Ok() : BadRequest("Nenhum valor bloqueado suficiente.");
         }
+
+        [Authorize]
+        [HttpGet("filter")]
+        public async Task<IActionResult> FilterAccounts([FromQuery] string? number, [FromQuery] string? branch, [FromQuery] string? document)
+        {
+            var result = await _service.FilterAccounts(number, branch, document);
+            return Ok(result);
+        }
     }
 }

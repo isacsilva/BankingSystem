@@ -24,23 +24,33 @@ namespace Service
             return await _context.Transactions.FindAsync(transactionId);
         }
 
-        public async Task<IEnumerable<Transaction>> GetByAccountId(int accountId, DateTime? from = null, DateTime? to = null, string type = null)
+        public async Task<IEnumerable<Transaction>> FilterTransactions(int? Id, int? accountId,DateTime? from,DateTime? to,string? type,string? counterpartyDocument)
         {
-            var query = _context.Transactions.AsQueryable();
+            var query = _context.Transactions
+                .Include(t => t.BankAccount)
+                .AsQueryable();
 
-            query = query.Where(t => t.BankAccountId == accountId);
+            if (Id.HasValue)
+                query = query.Where(t => t.Id == Id);
 
-            if (from.HasValue)
-                query = query.Where(t => t.CreatedAt >= from);
+            if (accountId.HasValue)
+                query = query.Where(t => t.BankAccountId == accountId);
 
-            if (to.HasValue)
-                query = query.Where(t => t.CreatedAt <= to);
-
-            if (!string.IsNullOrWhiteSpace(type))
+            if (!string.IsNullOrEmpty(type))
                 query = query.Where(t => t.Type == type);
 
-            return await query.OrderByDescending(t => t.CreatedAt).ToListAsync();
+            if (!string.IsNullOrEmpty(counterpartyDocument))
+                query = query.Where(t => t.CounterpartyHolderDocument == counterpartyDocument);
+
+            if (from.HasValue)
+                query = query.Where(t => t.CreatedAt >= from.Value);
+
+            if (to.HasValue)
+                query = query.Where(t => t.CreatedAt <= to.Value);
+
+            return await query.ToListAsync();
         }
+
 
         public async Task<IEnumerable<Transaction>> GetByCounterpartyDocument(string document)
         {
