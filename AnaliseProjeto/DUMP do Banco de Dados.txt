@@ -1,0 +1,21 @@
+INSERT INTO bankaccount (Id, Branch, Number, Type, HolderName, HolderEmail, HolderDocument, HolderType, Status, CreatedAt, UpdatedAt)
+VALUES
+(1, '0001', '123456', 'CURRENT', 'João da Silva', 'joao@email.com', '11111111111', 'NATURAL', 'ACTIVE', NOW(), NOW()),
+(2, '0001', '654321', 'PAYMENT', 'Maria Oliveira', 'maria@email.com', '22222222222', 'NATURAL', 'ACTIVE', NOW(), NOW()),
+(3, '0002', '987654', 'CURRENT', 'Empresa XPTO', 'contato@xpto.com.br', '33333333000199', 'LEGAL', 'BLOCKED', NOW(), NOW());
+
+INSERT INTO balance (BankAccountId, AvailableAmount, BlockedAmount)
+VALUES
+(1, 1000.00, 0.00),
+(2, 750.50, 50.00),
+(3, 12000.00, 1000.00);
+
+INSERT INTO transaction (Id, Type, Amount, BankAccountId,
+  CounterpartyBankCode, CounterpartyBankName, CounterpartyBranch, CounterpartyAccountNumber,
+  CounterpartyAccountType, CounterpartyHolderName, CounterpartyHolderType, CounterpartyHolderDocument,
+  CreatedAt, UpdatedAt) 
+  VALUES
+  (1, 'CREDIT', 500.00, 1, '001', 'Banco do Brasil', '0001', '000001', 'CURRENT', 'Fulano Teste', 'NATURAL', '12345678900', NOW(), NOW()),
+  (2, 'DEBIT', 200.00, 2, '104', 'Caixa Econômica', '0003', '000005', 'PAYMENT', 'Ciclano Teste', 'NATURAL', '98765432100', NOW(), NOW()),
+  (3, 'AMOUNT_HOLD', 300.00, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NOW(), NOW()),
+  (4, 'AMOUNT_RELEASE', 100.00, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NOW(), NOW());
