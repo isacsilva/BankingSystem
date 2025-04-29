@@ -178,48 +178,77 @@ Essa arquitetura é simples e direta, facilitando a organização e a reutiliza�
 
 ## 3. Execução
 
-### Backend
-
-1. Clone o repositório para sua máquina:
+### Clone o repositório para sua máquina:
 
 ```bash
 git clone https://github.com/isacsilva/BankingSystem
 ```
 
-2. Vá até a pasta da solução:
+### Configure o banco de dados
+
+1. Verifique se o MySQL está rodando na sua máquina.
+
+2. Crie o banco de dados:
+
+- Abra a pasta `AnaliseProjeto` no repositorio clonado.
+
+- Copie os comandos SQL para a criação do banco do arquivo `Banco de Dados.txt`
+
+- execute no seu gerenciador de banco de dados (ex: MySQL Workbench)
+
+3. Carregar o banco de dados com informações.
+
+- Abra a pasta `AnaliseProjeto`,o repositorio clonado.
+- Copie o código SQL pronto (com inserts para todas as tabelas) do arquivo `DUMP do Banco de Dados.txt` e execute no seu banco de dados.
+- execute no seu gerenciador de banco de dados (ex: MySQL Workbench)
+
+5. Configure a string de conexão:
+
+- Abra o arquivo `BankingSystemAPI/appsettings.json`
+
+- Ajuste a `ConnectionStrings:DefaultConnection` se necessário (usuário, senha, nome do banco, etc.)
+
+Exemplo de appsettings.json:
+
+```bash
+"ConnectionStrings": {
+  "DefaultConnection": "server=localhost;port=3306;user=root;password=123456;database=BankingDB"
+}
+```
+
+### Backend
+
+#### Rode o servidor pelo Visual Studio - Forma mais facil
+
+1. Garante aque o Visutal Studio esteja instalado em sua maquina.
+
+2. Abra a pasta do repositorio clonado e em seguida a do backend `BankingSystem`, e abra o projeto clicando no arquivo `BankingSystem.sln`
+
+3. Quando o projeto abrir, execute a solução em https
+
+#### Rode o servidor pelo prompt
+
+2. Acesse a pasta do repositorio clonado via prompt
+
+3. Vá até a pasta `BankingSystem`:
 
 ```bash
 cd BankingSystem
 ```
 
-3. Configure o banco de dados. Verifique se o MySQL está rodando e crie o banco de dados. (o nome deve ser o mesmo que está no `BankingSystemAPI/appsettings.json.json`).
-4. Ou abra a pasta AnaliseProjeto, copie a estrutura SQL do banco de dados que está dentro do arquivo Banco de Dados.txt e execute no seu banco para gerar o banco de dados da aplicação
-
-5. Ajuste a connection string em appsettings.json se necessário.(Trocar o nome do banco de dados atual para o seu)
-
-6. Rode o comando para aplicar as migrations e criar as tabelas: (Se você não tiver executado estrutura SQL)
-
-```bash
-dotnet ef database update
-```
-
 6. Rode o servidor:
 
 ```bash
-dotnet run
+set ASPNETCORE_ENVIRONMENT=Development && dotnet run --project BankingSystemAPI/BankingAPI.csproj
 ```
 
-7. Acesse a API em `https://localhost:7297`. (Sempre que rodo a aplicação pelo Visual Studio, a aplicação abre automaticamente no navegador)
+7. O servidor será rodado em http, então para não dar o erro **ERR_SSL_PROTOCOL_ERROR** ao utilizar o frontend você terá que alterar o acesso a URL de `https` para `http` no arquivo `banking-web/src/services/https-common.js`. Caso você utilize o Visual Studio para executar o backend esse problema não existe.
 
 ### Frontend
 
-1. Clone o repositório:
+1. Acesse a pasta do repositorio clonado via prompt
 
-```bash
-git clone https://github.com/isacsilva/BankingSystem
-```
-
-2. Vá até a pasta do projeto Vue.js dentro da solução:
+2. Vá até a pasta do projeto Vue.js `banking-web`:
 
 ```bash
 cd banking-web
@@ -234,18 +263,10 @@ npm install
 4. Rode o servidor de desenvolvimento:
 
 ```bash
-npm run dev
-```
-
-ou
-
-```bash
 npm run serve
 ```
 
-5. Acesse a aplicação em `http://localhost:***`.
-
-6. Carregar o banco de dados com informações. (Abra a pasta `AnaliseProjeto`, copie o código SQL pronto (com inserts para todas as tabelas) do arquivo `DUMP do Banco de Dados.txt` e execute no seu banco de dados.)
+5. Acesse a aplicação em `http://localhost:***`. (A porta é exibida no terminal)
 
 ---
 
